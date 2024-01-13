@@ -1,136 +1,368 @@
-<body>
-<h3>Hepatitis B Infected Pregnant Woman Reporting Form</h3>
-<form method="post">
-      <label for="last-name">Last Name:</label>
-      <input type="text" id="last-name" name="last-name">
-   
-      <label for="first-name">First Name:</label>
-      <input type="text" id="first-name" name="first-name">
-   
-      <label for="middle-name">Middle Name:</label>
-      <input type="text" id="middle-name" name="middle-name"><br>
-   
-      <label for="date-of-birth">Date of Birth: </label>
-      <input type="date" id="date-of-birth" name="date-of-birth"><br>
-    
-      <label for="estimated-delivery-date">Estimated Delivery Date :</label>
-      <input type="date" id="estimated-delivery-date" name="estimated-delivery-date" ><br>
-       
-      <label for="hepb-status-awareness">Patient aware of HepB+ status?</label>
-      <br>
-      <input type="checkbox" id="hepb-status-awareness-yes" name="hepb-status-awareness" value="Yes">
-      <label for="hepb-status-awareness-yes">Yes</label>
+from flask import Flask, render_template, request, redirect, url_for, session
+from sqlalchemy import create_engine, text
+from models.models import *
+import hashlib
 
-      <input type="checkbox" id="hepb-status-awareness-no" name="hepb-status-awareness" value="No">
-      <label for="hepb-status-awareness-no">No</label>
+app = Flask(__name__)
+app.secret_key="somesupersecretkey"
+app.config['SQLALCHEMY_DATABASE_URI']='mysql+mysqlconnector://root:bunmi123@localhost/sti_data'
+engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], echo=True)
 
-      <input type="checkbox" id="hepb-status-awareness-unknown" name="hepb-status-awareness" value="Unknown">
-      <label for="hepb-status-awareness-unknown">Unknown</label><br>
- 
-      <label for="address"> Address:</label>
-      <input type="text" id="address" name="address"><br>
-    
-      <label for="city"> City:</label>
-      <input type="text" id="city" name="city"><br>
-    
-      <label for="state"> State:</label>
-      <input type="text" id="state" name="state"><br>
-   
-      <label for="zip"> Zip:</label>
-      <input type="text" id="zip" name="zip"><br>
-     
-      <label for="phone-number"> Phone Number:</label>
-      <input type="text" id="phone-number" name="phone-number"><br>
-    <div>
-        <label for="insurance-type">Type of Insurance:</label><br>
-        <input type="checkbox" id="insurance-type-private" name="insurance-type" value="Private">
-        <label for="insurance-type-private">Private</label>
-        <input type="checkbox" id="insurance-type-medicaid" name="insurance-type" value="Medicaid">
-        <label for="insurance-type-medicaid">Medicaid</label>
-        <input type="checkbox" id="insurance-type-medicare" name="insurance-type" value="Medicare">
-        <label for="insurance-type-medicare">Medicare</label>
-        <input type="checkbox" id="insurance-type-uninsured" name="insurance-type" value="Uninsured">
-        <label for="insurance-type-uninsured">Uninsured</label>
-        <input type="checkbox" id="insurance-type-unknown" name="insurance-type" value="Unknown">
-        <label for="insurance-type-unknown">Unknown</label>
-    </div>
-    <div class="form-group">
-        <label for="race"> Race:</label><br>
-        <input type="checkbox" id="race-american-indian" name="race" value="American Indian/Alaskan Native">
-        <label for="race-american-indian">American Indian/Alaskan Native</label>
-        <input type="checkbox" id="race-asian" name="race" value="Asian">
-        <label for="race-asian">Asian</label>
-        <input type="checkbox" id="race-black-african-am" name="race" value="Black/African Am">
-        <label for="race-black-african-am">Black/African American</label>
-        <input type="checkbox" id="race-native-hawaiian-pacific-islander" name="race" value="Native Hawaiian/Pacific Islander">
-        <label for="race-native-hawaiian-pacific-islander">Native Hawaiian/Pacific Islander</label>
-        <input type="checkbox" id="race-white" name="race" value="White">
-        <label for="race-white">White</label>
-        <input type="checkbox" id="race-other" name="race" value="Other">
-        <label for="race-other">Other</label>
-        <input type="checkbox" id="race-unknown" name="race" value="Unknown">
-        <label for="race-unknown">Unknown</label>
-    </div>
-    <div class="form-group">
-        <label for="hispanic"> Hispanic:</label><br>
-        <input type="radio" id="hispanic-yes" name="hispanic" value="Yes">
-        <label for="hispanic-yes">Yes</label>
-        <input type="radio" id="hispanic-no" name="hispanic" value="No">
-        <label for="hispanic-no">No</label>
-        <input type="radio" id="hispanic-unknown" name="hispanic" value="Unknown">
-        <label for="hispanic-unknown">Unknown</label>
-    </div>
-    <div class="form-group">
-        <label for="country-of-birth"> Country of Birth:</label>
-        <input type="text" id="country-of-birth" name="country-of-birth">
-    </div>
-    <div class="form-group">
-        <label for="primary-language">Primary Language:</label>
-        <input type="text" id="primary-language" name="primary-language">
+Base.metadata.create_all(engine)
 
-    </div>
-    <div class="form-group">
-        <input type="checkbox" id="interpreter-needed" name="interpreter-needed">
-        <label for="interpreter-needed">Check if Interpreter Needed</label>
-    </div>
-<h3>LABORATORY INFORMATION</h3>
-<h4>Laboratory Results:</h4><p>Check off below any POSITIVE labs and attach positive Hep B lab results</p>
-    <div class="form-group">
-        <input type="checkbox" id="(Hep B surface antigen)" name="HBsAg (Hep B surface antigen)">
-        <label for="HBsAg (Hep B surface antigen)">HBsAg (Hep B surface antigen)</label>
-        <input type="checkbox" id="HBeAg (Hep Be antigen)" name="HBeAg (Hep Be antigen)">
-        <label for="HBeAg (Hep Be antigen)">HBeAg (Hep Be antigen)</label>
-        <input type="checkbox" id="IgM anti-HBc (IgM antibody to Hep B core antigen)" name="IgM anti-HBc (IgM antibody to Hep B core antigen)">
-        <label for="IgM anti-HBc (IgM antibody to Hep B core antigen)">IgM anti-HBc (IgM antibody to Hep B core antigen)</label>
-        <input type="checkbox" id="HBV DNA (Hep B virus DNA)" name="HBV DNA (Hep B virus DNA)">
-        <label for="HBsAg (Hep B surface antigen)">HBV DNA (Hep B virus DNA)</label>
-    </div>
-<h3>CLINICAL INFORMATION</h3>
-    <div>
-        <label for="OB Provider Last Name:">OB Provider Last Name:</label>
-        <input type="text" id="OB Provider Last Name:" name="OB Provider Last Name:">
-        <label for="OB Provider First Name:">OB Provider First Name:</label>
-        <input type="text" id="OB Provider first-name:" name="OB Provider First Name:"><br>
-        <label for="Expected Delivery Facility:">Expected Delivery Facility:</label>
-        <input type="text" id="Expected Delivery Facility" name="Expected Delivery Facility:">
-        <label for="Reporting Health Care Facility:">Reporting Health Care Facility:</label>
-        <input type="text" id="Reporting Health Care Facility:" name="Reporting Health Care Facility:"><br>
-        <label for="address"> Address: </label>
-        <input type="text" id="address" name="address"><br>
-        <label for="city"> City:</label>
-        <input type="text" id="city" name="city"><br>
-        <label for="state"> State:</label>
-        <input type="text" id="state" name="state"><br>
-        <label for="zip"> Zip:</label>
-        <input type="text" id="zip" name="zip"><br><br>
-        <label for="Contact Person at Reporting Facility:">Contact Person at Reporting Facility:</label>
-        <input type="text" id="Contact Person at Reporting Facility:" name="Contact Person at Reporting Facility:"><br>
-        <label for="Direct Phone:">  Direct Phone: </label>
-        <input type="text" id="Direct Phone:" name="Direct Phone:"><br>
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-      <label for="Date Form Completed:">Date Form Completed:</label>
-      <input type="date" id="Date Form Completed:" name="Date Form Completed:"><br>
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/overview')
+def overview():
+    return render_template('overview.html')
+
+@app.route('/home')
+def home():
+    if 'loggedin' in session:
+        return render_template('home.html', username=session['username'])
+    return redirect(url_for('login'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    msg =""
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
+        #get the form values
+        username = request.form['username'].lower()
+        password_entered = request.form['password']
+        #decrypt the password
+        hash = password_entered + app.secret_key
+        hash = hashlib.sha256(hash.encode())
+        password = hash.hexdigest()
+        #check if the user exists in the database
+        with engine.connect() as con:
+            result = con.execute(text(f"Select * from user where username = '{username}' and password = '{password}'"))
+            account = result.fetchone()
+            con.commit()
+
+        if account:
+            session['loggedin'] = True
+            session['id'] = account.id
+            session['username'] = account.username
+            msg = "Logged in successfully"
+            return redirect(url_for('home', msg=msg))
+        else:
+            msg = "Incorrect username/password"
+    return render_template('login.html', msg=msg)
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    msg =""
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
+        #get the form values
+        username = request.form['username'].lower()
+        cusername = request.form['cusername'].lower()
+        password = request.form['password']
+        cpassword = request.form['cpassword']
+        if username!=cusername:
+            msg = "Usernames do not match"
+            return render_template('register.html', msg=msg)
+        if password!=cpassword:
+            msg = "Passwords do not match"
+            return render_template('register.html', msg=msg)
+        with engine.connect() as con:
+            result = con.execute(text(f"Select * from user where username = '{username}'"))
+            account = result.fetchone()
+            con.commit()
+        if account:
+            msg = "Account already exists"
+            return render_template('register.html', msg=msg)
         
-    </div>
-    <input type="submit" value="Submit">
-</form>
+        if not username or not password or not cusername or not cpassword:
+                msg = "Please fill out the form"
+                return render_template('register.html', msg=msg)
+        else:
+            #encrypt the password
+            hash = password + app.secret_key
+            hash = hashlib.sha256(hash.encode())
+            password = hash.hexdigest()
+            #insert the user into the database
+            with engine.connect() as con:
+                con.execute(text(f"Insert into user (username, password) values ('{username}', '{password}')"))
+                con.commit()
+            msg = "Account created successfully"
+            return redirect(url_for('login', msg=msg))
+    return render_template('register.html', msg=msg)
+
+@app.route('/logout')
+def logout():
+    session.pop('loggedin', None)
+    session.pop('id', None)
+    session.pop('username', None)
+    return redirect(url_for('index'))
+
+       
+  
+@app.route('/congenital_syphilis')
+def congenital_syphilis():
+    return render_template('congenital_syphilis.html')
+
+@app.route('/hepatitis')
+def hepatitis():
+    return render_template('hepatitis.html')
+
+@app.route('/sti')
+def sti():
+    return render_template('sti.html')
+
+
+#The page for the client registration
+@app.route('/register_client', methods=['POST'])
+def register_client():
+    #get the data from the form
+    if request.method=='POST' and 'unique_id' in request.form:
+        unique_id = request.form['unique_id']
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        middle_name = request.form['middle_name']
+        date_of_birth = request.form['dob']
+        country_of_birth = request.form['country_of_birth']
+        sex = request.form['gender']
+        marital_status = request.form['marital-status']
+        occupation = request.form['occupation']
+        gender_identity = request.form['gender-identity']
+        sexual_orientation = request.form['sexual-orientation']
+        phone_number = request.form['phone']
+        address = request.form['line1']
+        city = request.form['city']
+        state = request.form['state']
+        zip_code = request.form['zip-code']
+        country = request.form['country']
+        email = request.form['email']
+        ethnicity = request.form['ethnicity']
+        race = request.form['race']
+        #check if the unique_id is already in the database
+        with engine.connect() as con:
+            result = con.execute(text(f"SELECT * FROM client_profile WHERE unique_id = '{unique_id}'"))
+            client = result.fetchone()
+            if client:
+                msg = 'The client already exists.'
+                return redirect(url_for('home', msg = msg))
+        #check if all the required fields are filled
+        
+        #insert the values in the database
+        created_at = datetime.now()
+        updated_at = datetime.now()
+        created_by = session['username']
+        updated_by = session['username']
+        with engine.connect() as con:
+            con.execute(text(f"INSERT INTO client_profile(created_by, created_at, updated_at, updated_by, unique_id, first_name, last_name, middle_name, date_of_birth,\
+                                      country_of_birth, gender, marital_status, occupation, gender_identity,\
+                                      sexual_orientation, phone_number, address, city, state, zip_code, country,\
+                                      email, ethnicity, race)\
+                                      VALUES('{created_by}','{created_at}', '{updated_at}', '{updated_by}','{unique_id}', '{first_name}', '{last_name}', '{middle_name}',\
+                                      '{date_of_birth}', '{country_of_birth}', '{sex}', '{marital_status}',\
+                                      '{occupation}', '{gender_identity}','{sexual_orientation}', '{phone_number}',\
+                                      '{address}', '{city}', '{state}', '{zip_code}', '{country}', '{email}',\
+                                      '{ethnicity}', '{race}'\
+                                    )"))
+            
+            con.execute(text(f"INSERT INTO client_screening_sti(created_by, created_at, updated_at, updated_by, unique_id)\
+                                      VALUES('{created_by}','{created_at}', '{updated_at}', '{updated_by}','{unique_id}')"))
+        
+            con.execute(text(f"INSERT INTO client_treatment_sti(created_by, created_at, updated_at, updated_by, unique_id)\
+                                      VALUES('{created_by}','{created_at}', '{updated_at}', '{updated_by}','{unique_id}')"))
+            con.execute(text(f"INSERT INTO congenital_syphilis_mothers(created_by, created_at,updated_at, updated_by, unique_id, infant_unique_id)\
+                                      VALUES('{created_by}','{created_at}', '{updated_at}', '{updated_by}','{unique_id}', '{unique_id}+infant')"))
+            con.execute(text(f"INSERT INTO congenital_syphilis_infant(created_by, created_at,updated_at, updated_by, infant_unique_id)\
+                                      VALUES('{created_by}','{created_at}', '{updated_at}', '{updated_by}','{unique_id}+infant')"))
+            
+            con.execute(text(f"INSERT INTO hepatitis_b_mothers(created_by, created_at, updated_at, updated_by, unique_id)\
+                                      VALUES('{created_by}','{created_at}', '{updated_at}', '{updated_by}','{unique_id}')"))
+            con.execute(text(f"INSERT INTO partner_management_sti(created_by, created_at, updated_at, updated_by, unique_id)\
+                                      VALUES('{created_by}','{created_at}', '{updated_at}', '{updated_by}','{unique_id}')"))
+        
+            con.commit()
+        msg = 'You have successfully registered the client.';
+        # redirect the user to the home page
+        return redirect(url_for('home', msg = msg))
+    return render_template('home.html')
+
+#The retieve client page based on passed client_id
+@app.route('/retrieve_client', methods=['POST'])
+def retrieve_client():
+    msg = ''
+    #get the client_id from the urlß
+    client_id = request.form['client_id']
+    #validate the client_id
+    #if the client_id is not valid, redirect to the home page
+    #if the client_id is valid, continue
+    if 'loggedin' in session:
+        if client_id:
+            #get the client data from the database
+            with engine.connect() as con:
+                result_profile = con.execute(text(f"SELECT * FROM client_profile WHERE unique_id = '{client_id}'"))
+                result_hepatitis = con.execute(text(f"SELECT * FROM hepatitis_b_mothers WHERE unique_id = '{client_id}'"))
+                result_screening_sti = con.execute(text(f"SELECT * FROM client_screening_sti WHERE unique_id = '{client_id}'"))
+                result_treatment_sti = con.execute(text(f"SELECT * FROM client_treatment_sti WHERE unique_id = '{client_id}'"))
+                result_congenital_syphilis_mothers = con.execute(text(f"SELECT * FROM congenital_syphilis_mothers WHERE unique_id = '{client_id}'"))
+                result_congenital_syphilis_infant = con.execute(text(f"SELECT * FROM congenital_syphilis_infant WHERE infant_unique_id = '{client_id}+infant'"))
+                result_partner_management_sti = con.execute(text(f"SELECT * FROM partner_management_sti WHERE unique_id = '{client_id}'"))
+
+                client_profile = result_profile.fetchone()
+                client_hepatitis = result_hepatitis.fetchone()
+                client_screening_sti = result_screening_sti.fetchone()
+                client_treatment_sti = result_treatment_sti.fetchone()
+                client_congenital_syphilis_mothers = result_congenital_syphilis_mothers.fetchone()
+                client_congenital_syphilis_infant = result_congenital_syphilis_infant.fetchone()
+                client_partner_management_sti = result_partner_management_sti.fetchone()
+
+                con.commit()
+            if client_profile and client_hepatitis and client_screening_sti and client_treatment_sti and client_congenital_syphilis_mothers and client_congenital_syphilis_infant and client_partner_management_sti:
+                #display the client data
+                return render_template('profile.html', client = client_profile, hepatitis = client_hepatitis, screening_sti = client_screening_sti, treatment_sti = client_treatment_sti, congenital_syphilis_mothers = client_congenital_syphilis_mothers, congenital_syphilis_infant = client_congenital_syphilis_infant, partner_management_sti = client_partner_management_sti)
+                                     
+            else:
+                #redirect to the home page
+                msg = 'The client does not exist.'
+                return redirect(url_for('home', msg = msg))
+    return redirect(url_for('login'))
+    
+@app.route('/update_profile', methods=['POST'])
+def update_profile():
+    msg=""
+    client_id = request.form['unique_id']
+    if 'loggedin' in session:
+        if client_id:
+            #get the client data from the database
+            with engine.connect() as con:
+                result_profile = con.execute(text(f"SELECT * FROM client_profile WHERE unique_id = '{client_id}'"))
+                client_profile = result_profile.fetchone()
+                con.commit()
+            if client_profile:
+                update_at = datetime.now()
+                updated_by = session['username']
+                first_name = request.form['first_name']
+                last_name = request.form['last_name']
+                middle_name = request.form['middle_name']
+                date_of_birth = request.form['dob']
+                country_of_birth = request.form['country_of_birth']
+                gender = request.form['gender']
+                marital_status = request.form['marital-status']
+                occupation = request.form['occupation']
+                gender_identity = request.form['gender-identity']
+                sexual_orientation = request.form['sexual-orientation']
+                phone_number = request.form['phone']
+                address = request.form['line1']
+                city = request.form['city']
+                state = request.form['state']
+                zip_code = request.form['zip-code']
+                country = request.form['country']
+                email = request.form['email']
+                ethnicity = request.form['ethnicity']
+                race = request.form['race']
+                with engine.connect() as con:
+                    con.execute(text(f"UPDATE client_profile SET updated_at = '{update_at}', updated_by = '{updated_by}',\
+                                              first_name = '{first_name}', last_name = '{last_name}',\
+                                                middle_name = '{middle_name}', date_of_birth = '{date_of_birth}',\
+                                                country_of_birth = '{country_of_birth}', gender = '{gender}',\
+                                                marital_status = '{marital_status}', occupation = '{occupation}',\
+                                                gender_identity ='{gender_identity}', sexual_orientation = '{sexual_orientation}',\
+                                                phone_number = '{phone_number}', address = '{address}', city = '{city}',\
+                                                state = '{state}', zip_code = '{zip_code}', country = '{country}',\
+                                                email = '{email}', ethnicity = '{ethnicity}', race ='{race}' WHERE unique_id = '{client_id}'"))
+                    con.commit()
+                msg = "Client profile updated successfully"
+                return render_template('home.html', msg=msg)
+                
+            else:
+                #redirect to the home page
+                msg = 'The client does not exist.'
+                return redirect(url_for('home', msg = msg))
+            
+#The  chlamydia_gonorrhea update profile
+@app.route('/update_chlamydia_gonorrhea', methods=['POST'])
+def update_chlamydia_gonorrhea():
+    msg=""
+    client_id = request.form['unique_id']
+    if 'loggedin' in session:
+        if client_id:
+            #get the client data from the database
+            with engine.connect() as con:
+                result_profile = con.execute(text(f"SELECT * FROM client_profile WHERE unique_id = '{client_id}'"))
+                client_profile = result_profile.fetchone()
+                con.commit()
+            if client_profile:
+                update_at = datetime.now()
+                updated_by = session['username']
+                date_of_screening = request.form['date_of_screening']
+                health_care_provider = request.form['health_care_provider']
+                reporter_name = request.form['reporter_name']
+                reporter_contact = request.form['reporter_contact']
+                sexual_partner_gender = request.form['sexual_partner_gender']
+                sexual_partner_gender_identity =request.form['sexual_partner_gender_identity']
+                previous_HIV_screening = request.form['previous_HIV_screening']
+                previous_HIV_screening_date =request.form ['previous_HIV_screening_date']
+                previous_HIV_screening_result =request.form ['previous_HIV_screening_result']
+                reason_for_testing = request.form ['reason_for_testing']
+                screening_type = request.form['screening_type']
+                site_of_sample_collection = request.form['site_of_sample_collection']
+                sample_collection_date = request.form['sample_collection_date']
+                screening_result = request.form['screening_result']
+                screening_notes = request.form ['screening_notes']
+                diagnosis = request.form['diagnosis']
+                date_of_treatment = request.form['date_of_treatment']
+                treatment_health_care_provider = request.form['treatment_health_care_provider']
+                treatment_reporter_name = request.form['treatment_reporter_name']
+                treatment_reporter_contact = request.form['treatment_reporter_contact']
+                treatment_type = request.form['treatment_type']
+                treatment_plan = request.form['treatment_plan']
+                treatment_notes = request.form['treatment_notes']
+                treatment_result = request.form['treatment_result']
+                partner_unique_id = request.form['partner_unique_id']
+                date_of_partner_management = request.form['date_of_partner_management']
+                partner_management_health_care_provider = request.form['partner_management_health_care_provider']
+                partner_management_reporter_name = request.form['partner_management_reporter_name']
+                partner_management_reporter_contact = request.form['partner_management_reporter_contact']
+                partner_management_type = request.form['partner_management_type']
+                partner_management_plan = request.form['partner_management_plan']
+                partner_management_notes = request.form['partner_management_notes']
+                partner_management_result = request.form['partner_management_result']
+         
+                with engine.connect() as con:
+                    con.execute(text(f"UPDATE client_screening_sti SET updated_at = '{update_at}', updated_by = '{updated_by}',\
+                                              date_of_screening = '{date_of_screening}',health_care_provider = '{health_care_provider}',\
+                                              reporter_name = '{reporter_name}',reporter_contact = '{reporter_contact}',\
+                                              sexual_partner_gender = '{sexual_partner_gender}',sexual_partner_gender_identity = '{sexual_partner_gender_identity}',\
+                                              previous_HIV_screening = '{previous_HIV_screening}',previous_HIV_screening_date = '{previous_HIV_screening_date}',\
+                                              previous_HIV_screening_result = '{previous_HIV_screening_result}',reason_for_testing = '{reason_for_testing}',\
+                                              screening_type = '{screening_type}',site_of_sample_collection = '{site_of_sample_collection}',\
+                                              sample_collection_date = '{sample_collection_date}',screening_result = '{screening_result}',\
+                                              screening_notes = '{screening_notes}',diagnosis = '{diagnosis}' WHERE unique_id = '{client_id}'"))
+
+                with engine.connect() as con:   
+                    con.execute(text(f"UPDATE client_screening_sti SET updated_at = '{update_at}', updated_by = '{updated_by}',\
+                                              date_of_treatment = '{date_of_treatment}',health_care_provider = '{treatment_health_care_provider}',\
+                                              reporter_name = '{treatment_reporter_name}',reporter_contact = '{treatment_reporter_contact}',\
+                                              treatment_type = '{treatment_type}',treatment_plan = '{treatment_plan}',\
+                                              treatment_notes = '{treatment_notes}',treatment_result = '{treatment_result}' WHERE unique_id = '{client_id}'"))
+
+                with engine.connect() as con:    
+                    con.execute(text(f"UPDATE client_screening_sti SET updated_at = '{update_at}', updated_by = '{updated_by}',\
+                                              partner_unique_id = '{partner_unique_id}',date_of_partner_management = '{date_of_partner_management}',\
+                                              health_care_provider = '{partner_management_health_care_provider}',reporter_name = '{partner_management_reporter_name}',\
+                                              reporter_contact = '{partner_management_reporter_contact}',partner_management_type = '{partner_management_type}',\
+                                              partner_management_plan = '{partner_management_plan}',partner_management_notes = '{partner_management_notes}',\
+                                              partner_management_result = '{partner_management_result}'  WHERE unique_id = '{client_id}'"))
+                con.commit()
+                msg = "Client profile updated successfully"
+            return render_template('home.html', msg=msg)
+                
+        else:
+        #redirect to the home page
+            msg = 'The client does not exist.'
+            return redirect(url_for('home', msg = msg))
+    
+
+if __name__ == '__main__':
+    app.run(debug=True)

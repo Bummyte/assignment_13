@@ -1,0 +1,685 @@
+{% extends "homebase.html" %}
+{% block head %}
+    <meta name = "description" content="Home page for STI data collection">
+{% endblock head %}
+{% block title %}<title>Home</title>{% endblock title %}
+{% block javascripts %}
+<script src = "{{ url_for('static', filename='tabs.js')}}"></script>
+{% endblock javascripts %}
+{% block content %}
+<div class="container-fluid">
+    <h1 class="mt-4">Client data collection profile</h1>
+    <h3>Personal Information</h3>
+    <div id="wrapper2">
+        <div id="tabContainer">
+        <div id="tabs">
+            <ul>
+                    <li id="tabHeader_1">Personal Profile</li>
+                    <li id="tabHeader_2">Chlaymdia and Gonorrhea</li>
+                    <li id="tabHeader_3">Hepatitis B Reporting</li>
+                    <li id="tabHeader_4">Congenital Syphilis</li>
+            </ul>
+        </div>
+
+        <div id="tabscontent">
+            
+            <nav class="tabpage" id="tabpage_1">
+                <form method ="post" action ="/update_profile">
+                <p> The retrived data is displayed here</p>
+                <div class ="form-group">
+                    <label for="client_id">Client ID</label>
+                    <input type="text" class="form-control" id="client_id" name="unique_id" value="{{ client.unique_id }}" readonly>
+                </div>
+                <div class ="form-group">
+                    <label for="first_name">First Name</label>
+                    <input type="text" class="form-control" id="first_name" name="first_name" value = "{{ client.first_name }}">
+                </div>
+                <div class ="form-group">
+                    <label for="middle_name">Middle Name</label>
+                    <input type="text" class="form-control" id="middle_name" name="middle_name" value = "{{ client.middle_name }}">
+                </div>
+                <div class ="form-group">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" value = "{{ client.last_name }}">
+                </div> 
+    
+                <div class ="form-group">
+                    <label for="dob">Date of Birth</label>
+                    <input type="datetime-local" class="form-control" id="dob" name="dob" value = "{{ client.date_of_birth }}">
+                </div> 
+    
+                <div class ="form-group">
+                    <label for="country-of-birth">Country of birth</label>
+                    <input type="text" class="form-control" id="country-of-birth" name="country_of_birth" value = "{{ client.country_of_birth }}">
+                </div>
+                
+                <div class ="form-group">
+                    <label for="gender">Sex: </label><br/>
+                    <input type="radio"  id="gender" name="gender" value = "{{ client.gender }}" checked>{{ client.gender }}
+                    <input type="radio"  id="gender" name="gender" value = "female"> Female
+                    <input type="radio" id="gender" name="gender" value = "male"> Male
+                    <input type="radio" id="gender" name="gender" value = "intersex"> Intersex
+                </div>
+                <hr/>
+                <div class ="form-group">
+                    <label for="marital-status">Marital Status:</label><br/>
+                    <input type="radio" id="marital-status" name="marital-status" value ="{{ client.marital_status }}" checked> {{ client.marital_status }}
+                    <input type="radio" id="marital-status" name="marital-status" value ="single"> single
+                    <input type="radio" id="marital-status" name="marital-status" value ="married"> married
+                    <input type="radio" id="marital-status" name="marital-status" value ="divorced"> divorced
+                    <input type="radio" id="marital-status" name="marital-status" value ="widowed"> widowed
+                    <input type="radio" id="marital-status" name="marital-status" value ="separated"> separated
+                    <input type="radio" id="marital-status" name="marital-status" value ="cohabiting"> cohabiting
+                    <input type="radio" id="marital-status" name="marital-status" value ="other"> other
+                </div>
+                <hr/>
+    
+    
+                <div class ="form-group">
+                    <label for="occupation">Occupation: </label><br/>
+                    <input type="radio" id="occupation" name="occupation" value="{{ client.occupation }}" checked>{{ client.occupation }}
+                    <input type="radio" id="occupation" name="occupation" value="employed">employed
+                    <input type="radio" id="occupation" name="occupation" value="unemployed">unemployed
+                    <input type="radio" id="occupation" name="occupation" value="student">student
+                    <input type="radio" id="occupation" name="occupation" value="retired">retired
+                    <input type="radio" id="occupation" name="occupation" value="housewife">housewife
+                    <input type="radio" id="occupation" name="occupation" value="self-employed">self-employed
+                    <input type="radio" id="occupation" name="occupation" value="other">other
+    
+                </div>
+                <hr/>
+                
+                <div class ="form-group">
+                    <label for="gender-identity">Gender Identity</label>
+                    <input type="text" class="form-control" id="gender-identity" name="gender-identity" value="{{ client.gender_identity }}">
+                </div>
+               <hr/>
+                <div class ="form-group">
+                    <label for="sexual-orientation">Sexual Orientation</label>
+                    <input type="text" class="form-control" id="sexual-orientation" name="sexual-orientation" value="{{client.sexual_orientation}}">
+                </div>
+                <hr/>
+                <div class ="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="text" class="form-control" id="phone" name="phone" value ="{{ client.phone_number }}">
+                </div>
+                <hr/>
+                <div class ="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" class="form-control" id="address" name="line1" value ="{{ client.address }}">
+                    <input type="text" class="form-control" name="city" value ="{{ client.city }}">
+                    <input type="text" class="form-control" name="state" value="{{ client.state}}">
+                    <input type="text" class="form-control" name="zip-code" value="{{client.zip_code}}">
+                    <input type="text" class="form-control" name="country" value="{{client.country}}">
+                </div>
+                <hr/>
+                <div class ="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" class="form-control" id="email" name="email" value = "{{ client.email }}"">
+                </div>
+                <hr/>
+                <div class ="form-group">
+                    <label for="ethnicity">Ethnicity</label>
+                    <input type="text" class="form-control" id="ethnicity" name="ethnicity" value ="{{ client.ethnicity }}">
+                </div>
+                <hr/>
+                <div class ="form-group">
+                    <label for="race">Race</label>
+                    <input type="text" class="form-control" id="race" name="race" value = "{{ client.race }}">
+                </div>
+                <hr/>
+                <input type ="submit" value = "Update Profile" class ="btn btn-success"> 
+
+            </nav>
+            <nav class="tabpage" id="tabpage_2">
+                <p>Chlaymdia and Gonorrhea</p>
+                <!-- Client Screening Form Fields -->
+                <div class ="form-group">
+                    <label for="date_of_screening">Date of Screening:</label>
+                    <input type="datetime-local" class="form-control" id="date_of_screening" name="date_of_screening" value="{{ client_screening_sti.date_of_screening }}">
+                </div>
+                <div class ="form-group">        
+                    <label for="health_care_provider">Health Care Provider:</label>
+                    <input type="text" class="form-control" id="health_care_provider" name="health_care_provider" value="{{ client_screening_sti.health_care_provider }}">
+                </div>
+                <div class ="form-group">
+                    <label for="reporter_name">Reporter Name:</label>
+                    <input type="text" class="form-group" id="reporter_name" name="reporter_name" value="{{ client_screening_sti.reporter_name }}">
+                </div>    
+                <div class ="form-group">
+                    <label for="reporter_contact" >Reporter Contact:</label>
+                    <input type="text" class="form-group" id="reporter_contact" name="reporter_contact" value="{{ client_screening_sti.reporter_contact }}">
+                </div>
+                <div class ="form-group">    
+                    <label for="sexual_partner_gender">Sexual Partner Gender:</label>
+                    <input type="radio" class="form-group" id="sexual_partner_gender" name="sexual_partner_gender" value="{{ client_screening_sti.sexual_partner_gender }}">
+                    <input type="radio"  id="sexual_partner_gender" name="sexual_partner_gender" value = "female"> Female
+                    <input type="radio"  id="sexual_partner_gender" name="sexual_partner_gender" value = "male"> Male
+                </div>
+                <div class ="form-group">    
+                    <label for="sexual_partner_gender_identity">Sexual Partner Gender Identity:</label>
+                    <input type="radio" class="form-group" id="sexual_partner_gender_identity" name="sexual_partner_gender_identity" value="{{ client_screening_sti.sexual_partner_gender_identity }}">
+                    <input type="radio"  id="sexual_partner_gender_identity" name="sexual_partner_gender_identity" value = "female"> Female
+                    <input type="radio"  id="sexual_partner_gender_identity" name="sexual_partner_gender_identity" value = "male"> Male
+                </div>
+                <div class ="form-group">    
+                    <label for="previous_HIV_screening">Previous HIV Screening:</label>
+                    <input type="text" class="form-group" id="previous_HIV_screening" name="previous_HIV_screening" value="{{ client_screening_sti.previous_HIV_screening }}">
+                    <input type="radio"  id="previous_HIV_screening" name="previous_HIV_screening" value = "yes"> Yes
+                    <input type="radio"  id="previous_HIV_screening" name="previous_HIV_screening" value = "no"> NO
+                    <input type="radio"  id="previous_HIV_screening" name="previous_HIV_screening" value = "unknown"> Unknown
+                </nav>    
+                <div class ="form-group">
+                    <label for="previous_HIV_screening_date">Previous HIV Screening Date:</label>
+                    <input type="text" class="form-group" id="previous_HIV_screening_date" name="previous_HIV_screening_date" value="{{ client_screening_sti.previous_HIV_screening_date }}">
+                </div>
+                <div class ="form-group">    
+                    <label for="previous_HIV_screening_result">Previous HIV Screening Result:</label>
+                    <input type="text" class="form-group" id="previous_HIV_screening_result" name="previous_HIV_screening_result" value="{{ client_screening_sti.previous_HIV_screening_result }}">
+                    <input type="radio"  id="previous_HIV_screening_result" name="previous_HIV_screening_result" value = "pos"> Pos
+                    <input type="radio"  id="previous_HIV_screening_result" name="previous_HIV_screening_result" value = "neg"> Neg
+                    <input type="radio"  id="previous_HIV_screening_result" name="previous_HIV_screening_result" value = "unknown"> Unknown
+                </div>
+                <div class="form-group">   
+                    <label for="reason_for_testing">Reason for Testing:</label>
+                    <input type="text" class="form-group" id="reason_for_testing" name="reason_for_testing" value="{{ client_screening_sti.reason_for_testing }}">
+                    <input type="radio"  id="reason_for_testing" name="reason_for_testing" value = "Symptomatic"> Symptomatic
+                    <input type="radio"  id="reason_for_testing" name="reason_for_testing" value = "Routine Exam"> Routine Exam
+                    <input type="radio"  id="reason_for_testing" name="reason_for_testing" value = "Test for Cure"> Test for Cure
+                    <input type="radio"  id="reason_for_testing" name="reason_for_testing" value = "Exposed to Infection"> Exposed to Infection
+                    <input type="radio"  id="reason_for_testing" name="reason_for_testing" value = "Pregnant"> Pregnant
+                </div>    
+                <div class="form-group">
+                    <label for="screening_type">Screening Type:</label>
+                    <input type="text" class="form-group" id="screening_type" name="screening_type" value="{{ client_screening_sti.screening_type }}">
+                    
+                </div>    
+                <div class="form-group">
+                    <label for="site_of_sample_collection" >Site of Sample Collection:</label>
+                    <input type="text" class="form-group" id="site_of_sample_collection" name="site_of_sample_collection" value="{{ client_screening_sti.site_of_sample_collection }}">
+                    <input type="checkbox"  id="site_of_sample_collection" name="site_of_sample_collection" value = "Cervix"> Cervix
+                    <input type="checkbox"  id="site_of_sample_collection" name="site_of_sample_collection" value = "Ocular"> Ocular
+                    <input type="checkbox"  id="site_of_sample_collection" name="site_of_sample_collection" value = "Virginal"> Virginal
+                    <input type="checkbox"  id="site_of_sample_collection" name="site_of_sample_collection" value = "Urine"> Urine
+                    <input type="checkbox"  id="site_of_sample_collection" name="site_of_sample_collection" value = "Urethra"> Urethra
+                    <input type="checkbox"  id="site_of_sample_collection" name="site_of_sample_collection" value = "Pharynx "> Pharynx 
+                    <input type="checkbox"  id="site_of_sample_collection" name="site_of_sample_collection" value = "Rectum"> Rectum
+                    <input type="checkbox"  id="site_of_sample_collection" name="site_of_sample_collection" value = "Other"> Other:
+                </div>    
+                <div class="form-group">
+                    <label for="sample_collection_date" >Sample Collection Date:</label>
+                    <input type="datetime-local" class="form-group" id="sample_collection_date" name="sample_collection_date" value="{{ client_screening_sti.sample_collection_date }}">
+                </div>
+                <div class="form-group">
+                    <label for="screening_result">Screening Result:</label>
+                    <input type="text" class="form-group" id="screening_result" name="screening_result" value="{{ client_screening_sti.screening_result }}">
+                </div>
+                <div class="form-group">
+                    <label for="screening_notes">Screening Notes:</label>
+                    <input type="text" class="form-group" id="screening_notes" name="screening_notes" value="{{ client_screening_sti.screening_notes }}">
+                </div>
+                <div class="form-group">
+                    <label for="diagnosis">Diagnosis:</label>
+                    <input type="text" class="form-group" id="diagnosis" name="diagnosis" value="{{ client_screening_sti.diagnosis }}">
+                    <input type="checkbox"  id="diagnosis" name="diagnosis" value = "Asymptomatic"> Asymptomatic
+                    <input type="checkbox"  id="diagnosis" name="diagnosis" value = "Symptomatic-Uncomplicated"> Symptomatic-Uncomplicated
+                    <input type="checkbox"  id="diagnosis" name="diagnosis" value = "Pelvic Inflammatory Disease (PID) "> Pelvic Inflammatory Disease (PID) 
+                    <input type="checkbox"  id="diagnosis" name="diagnosis" value = "Ophthalmia /conjunctivitis"> Ophthalmia /conjunctivitis
+                    <input type="checkbox"  id="diagnosis" name="diagnosis" value = "Disseminated"> Disseminated
+                </div>
+                <input type="submit" value="Submit">
+            
+            </nav>
+            <hr>
+        <nav class="tabpage" id="tabpage_2">
+            <!-- Client Treatment Form Fields -->
+            <div class="form-group">
+                <label for="date_of_treatment">Date of Treatment:</label>
+                <input type="datetime-local" class="form-group" id="date_of_treatment" name="date_of_treatment" value="{{ client_treatment_sti.date_of_treatment }}">
+            </div>
+            <div class="form-group">        
+                <label for="health_care_provider">Health Care Provider:</label>
+                <input type="text" class="form-group" id="health_care_provider" name="health_care_provider" value="{{ client_treatment_sti.health_care_provider }}">
+            </div>
+            <div class="form-group">   
+                <label for="reporter_name">Reporter Name:</label>
+                <input type="text" class="form-group" id="reporter_name" name="reporter_name" value="{{ client_treatment_sti.reporter_name }}">
+            </div>
+            <div class="form-group">
+                <label for="reporter_contact">Reporter Contact:</label>
+                <input type="text" class="form-group" id="reporter_contact" name="reporter_contact" value="{{ client_treatment_sti.reporter_contact }}">
+            </div>
+            <div class="form-group">
+                <label for="form-group">Treatment Type:</label>
+                <input type="text" class="form-group" id="treatment_plan" name="treatment_type" value="{{ client_treatment_sti.treatment_type }}">
+                </div>
+          
+            <div class="form-group">        
+                <label>Treatment Plan:</label><br>
+                <input type="text" id="treatment_plan" name="treatment_plan" value="GONORRHEA TREATMENT PLAN:"> GONORRHEA TREATMENT PLAN:
+                <input type="checkbox" value="Rocephin/Ceftriaxone 250mg IM x 1"> Rocephin/Ceftriaxone 250mg IM x 1
+                <label>Date:</label>
+                <input type="date" id="date"> <p>plus</p>
+                <input type="checkbox" value="Azithromycin 1gm orally in a single dose. ">  Azithromycin 1gm orally in a single dose. 
+            </div>
+            <div>
+            <input type = "text" id="treatment_plan" value="CHLAMYDIA TREATMENT PLAN:"> CHLAMYDIA TREATMENT PLAN:
+            <input type="checkbox" value="Azithromycin 1gm orally in a single dose"> Azithromycin 1gm orally in a single dose
+            <label>Date:</label>
+            <input type="date"> <P>OR</P> 
+            <input type="checkbox" value="Doxycycline 100mg BID x 7 days">Doxycycline 100mg BID x 7 days
+            <label>Date:</label>
+            <input value="date" type="date" >                  
+            </div>
+            <div class="form-group"></div>
+                <label for="treatment_notes">Treatment Notes:</label>
+                <input type="text" class="form-group" id="treatment_notes" name="treatment_notes" value="{{ client_treatment_sti.treatment_notes }}">
+            </div>  
+            <div class="form-group"> 
+                <label for="treatment_result">Treatment Result:</label>
+                <input type="text" class="form-group" id="treatment_result" name="treatment_result" value="{{ client_treatment_sti.treatment_result }}">
+            </div>
+            <div>      
+                <input type="submit" value="Submit">
+            </div>
+        </nav>
+        <hr>
+        <nav class="tabpage" id="tabpage_2">
+            <!-- Partner Management Form Fields -->
+            <div class="form-group">
+                <label for="date_of_partner_management">Date of Partner Management:</label>
+                <input type="datetime-local" class="date_of_partner_management" id="date_of_partner_management" name="date_of_partner_management" value="{{ partner_management_sti.date_of_partner_management }}">
+            </div>
+            <div class="form-group">
+                <label for="health_care_provider">Health Care Provider:</label>
+                <input type="text" class="form-group" id="health_care_provider" name="health_care_provider" value="{{ partner_management_sti.health_care_provider }}">
+            </div>
+            <div class="form-group">
+                <label for="reporter_name">Reporter Name:</label>
+                <input type="text" class="form-group" id="reporter_name" name="reporter_name" value="{{ partner_management_sti.reporter_name }}">
+            </div>
+            <div class="form-group">    
+                <label for="reporter_contact">Reporter Contact:</label>
+                <input type="text" class="form-group" id="reporter_contact" name="reporter_contact" value="{{ partner_management_sti.reporter_contact }}">
+            </div>
+            <div class="form-group">
+                <label for="partner_unique_id">Partner Unique ID:</label>
+                <input type="text" class="form-group" id="partner_unique_id" name="partner_unique_id" value="{{ partner_management_sti.partner_unique_id }}">
+            </div>
+            <div class="form-group">
+                <label for="partner_management_type">Partner Management Type:</label>
+                <input type="text" class="form-group" id="partner_management_type" name="partner_management_type" value="{{ partner_management_sti.partner_management_type }}">
+            </div>
+            <div class="form-group">
+                <label for="partner_management_plan">Partner Management Plan:</label>
+                <input type="text" class="form-group" id="partner_management_plan" name="partner_management_plan" value="{{ partner_management_sti.partner_management_plan }}">
+            </div>
+            <div class="form-group">
+                <label for="partner_management_notes">Partner Management Notes:</label>
+                <input type="text" class="form-group" id="partner_management_notes" name="partner_management_notes" value="{{ partner_management_sti.partner_management_notes }}">
+            </div>
+            <div class="form-group">
+                <label for="partner_management_result">Partner Management Result:</label>
+                <input type="text" class="form-group" id="partner_management_result" name="partner_management_result" value="{{ partner_management_sti.partner_management_result }}">
+            </div>
+            <input type="submit" value="Submit">
+        </nav>
+        <hr>
+            <nav class="tabpage" id="tabpage_3">
+                <p>Hepatitis B Reporting</p>
+                form goes here
+            </nav>
+            <nav class="tabpage" id="tabpage_4">
+                <p>Congenital Syphilis</p>
+                <div class="container-fluid">
+                    <h1 class="mt-4">Congenital Syphilis, Case Investigation and Report</h1>
+                    <h3>Reporting Information</h3>
+                    <div class="msg">{{ msg }}</div>
+                    <form action="/update_syphilis" method="post">
+                        <div class ="row">
+                        <div class="col-5">
+                        <label for="report-date">Date of Report</label>
+                        </div>
+                        <div class="col-7">
+                        <input type="date" name="date_of_report" id="report-date" value="{{ congenital_syphilis_mothers.date_of_report }}">
+                        </div>
+                        </div>
+                        <hr/>
+                        <div class ="row">
+                        <div class="col-5">
+                        <label for="mother-unique-id">Mother's Unique ID</label>
+                        </div>
+                        <div class="col-7">
+                        <input type="text" name="mother_unique_id" id="mother-unique-id" value="{{ congenital_syphilis_mothers.unique_id }}">
+                        </div>
+                        </div>
+                        <hr/>
+                        <div class ="row">
+                            <div class="col-5">
+                            <label for="non-trep-test">Non Treponemal / Treponemal Test</label>
+                            </div>
+                            <div class="col-7">
+                            <input type="checkbox" name="first-visit" id="non-trep-test" value="{{congenital_syphilis_mothers.test_at_first_visit}}"> First Prenatal Visit<br/>
+                            <input type="checkbox" name="28-32" id="non-trep-test" value="">28-32 weeks gestation<br/>
+                            <input type="checkbox" name="delivery" id="non-trep-test" value=""> delivery<br/>
+                            </div>
+                            </div>
+                            <hr/>
+                            <div class ="row">
+                            <div class="col-5">
+                            <label for="trep-test">Tests</label>
+                            </div>
+                            <div class="col-7">
+                               Date of Test 1: <input type ="date" name = "dateoftest1"><br/>
+                               Type of Test 1: <input type ="text" name = "typeoftest1"><br/>
+                               Result 1: <br/>
+                                <input type ="radio" name = "result1" value = "positive">Positive<br/>
+                                <input type ="radio" name = "result1" value = "negative">Negative<br/>
+                                <input type ="radio" name = "result1" value = "unknown">unknown<br/>
+                              Titre 1: <input type ="text" name = "titre1"><br/>
+                              <hr/>
+                              Date of Test 2: <input type ="date" name = "dateoftest2"><br/>
+                              Type of Test 2: <input type ="text" name = "typeoftest2"><br/>
+                              Result 2: <br/>
+                               <input type ="radio" name = "result2" value = "positive">Positive<br/>
+                               <input type ="radio" name = "result2" value = "negative">Negative<br/>
+                               <input type ="radio" name = "result2" value = "unknown">unknown<br/>
+                             Titre 2: <input type ="text" name = "titre2"><br/>
+                             <hr/>
+                             Date of Test 3: <input type ="date" name = "dateoftest3"><br/>
+                             Type of Test 3: <input type ="text" name = "typeoftest3"><br/>
+                             Result 3: <br/>
+                              <input type ="radio" name = "result3" value = "positive">Positive<br/>
+                              <input type ="radio" name = "result3" value = "negative">Negative<br/>
+                              <input type ="radio" name = "result3" value = "unknown">unknown<br/>
+                            Titre 3: <input type ="text" name = "titre3"><br/>
+                            </div>
+                            </div>
+                            <hr/>
+                            <div class ="row">
+                            <div class="col-5">
+                            <label for="hiv-status">Mother's HIV status during Pregnancy</label>
+                            </div>
+                            <div class="col-7">
+                            <input type="radio" name="hiv-status" id="hiv-status" value="positive"> Positive<br/>
+                            <input type="radio" name="hiv-status" id="hiv-status" value="negative"> Negative<br/>
+                            <input type="radio" name="hiv-status" id="hiv-status" value="not tested"> Not tested<br/>
+                            <input type="radio" name="hiv-status" id="hiv-status" value="unknown"> Unknown<br/>
+                            </div>
+                            </div>
+                
+                            <hr/>
+                            <div class ="row">
+                            <div class="col-5">
+                            <label for="clinical-stage">Clinical Stage of syphilis during pregnancy</label>
+                            </div>
+                            <div class="col-7">
+                            <input type="radio" name="clinical-stage" id="clinical-stage" value="primary"> Primary<br/>
+                            <input type="radio" name="clinical-stage" id="clinical-stage" value="secondary"> Secondary<br/>
+                            <input type="radio" name="clinical-stage" id="clinical-stage" value="early latent"> Early latent<br/>
+                            <input type="radio" name="clinical-stage" id="clinical-stage" value="late latent"> Late latent<br/>
+                            <input type="radio" name="clinical-stage" id="clinical-stage" value="unknown"> Unknown<br/>
+                            <input type ="radio" name ="clinical-stage" id="clinical-stage" value ="serofast">Serofast / previousy treated<br/>
+                            </div>
+                            </div>
+                            <hr/>
+                            <div class ="row">
+                            <div class="col-5">
+                            <label for="first-treatment">Date of first dose of benzathine Penicillin</label>
+                            </div>
+                            <div class="col-7">
+                            Date : <input type="date" name="first-treatment" id="first-treatment">
+                            Trimester:<br/> 
+                            <input type="radio" name="trimester" value = "first-trimester"><br/> First Trimester
+                            <input type="radio" name="trimester" value = "second-trimester"><br/> Second Trimester
+                            <input type="radio" name="trimester" value = "third-trimester"><br/>Third Trimester
+                            <input type="radio" name="trimester" value = "no-treatment"><br/>No treatment
+                            <input type="radio" name="trimester" value = "unknown"><br/> Unknown
+                
+                            </div>
+                            </div>
+                            <hr/>
+                            <div class ="row">
+                            <div class="col-5">
+                            <label for="treatment-dose">Treatment Dose</label>
+                            </div>
+                            <div class="col-7">
+                            <input type="radio" name="treatment-dose" id="treatment-dose" value="2.4 million units"> 2.4 million units<br/>
+                            <input type="radio" name="treatment-dose" id="treatment-dose" value="4.8 million units"> 4.8 million units<br/>
+                            <input type="radio" name="treatment-dose" id="treatment-dose" value="7.2 million units"> 7.2 million units<br/>
+                            <input type="radio" name="treatment-dose" id="treatment-dose" value="unknown"> Unknown<br/>
+                            <input type ="radio" name ="treatment-dose" id="treatment-dose" value ="other">Other<br/>
+                            </div> 
+                            </div>
+                            <hr/>
+                            <div class ="row">
+                            <div class="col-5"> 
+                            <label for="treatment-outcome">Treatment Outcome</label>
+                            </div>
+                            <div class="col-7">
+                            <input type="radio" name="treatment-outcome" id="treatment-outcome" value="cured"> Cured<br/>
+                            <input type="radio" name="treatment-outcome" id="treatment-outcome" value="treatment-failure"> Treatment Failure<br/>
+                            <input type="radio" name="treatment-outcome" id="treatment-outcome" value="unknown"> Unknown<br/>
+                            </div>
+                            </div>
+                            <hr/>
+                            <div class ="row">
+                            <div class="col-5">
+                            <label for="treatment-response">Did mother have an appropriate serologic response?</label>
+                            </div>
+                            <div class="col-7">
+                            <input type="radio" name="treatment-response" id="treatment-response" value="yes, appropriate response"> Yes, appropriate response<br/>
+                            <input type="radio" name="treatment-response" id="treatment-response" value="no, inappropriate response. Evidence of treatment failure"> No, inappropriate response. Evidence of treatment failure<br/>
+                            <input type ="radio" name = "treatment-response" id = treatment-rsponse value = "response could not be determined from available non-treponemal titre information"> Response could not be determined from available non-treponemal titre information<br/>  
+                            <input type="radio" name="treatment-response" id="treatment-response" value="no enough time for titre to change">Not enough time for titre to change<br/>
+                            <input type="radio" name="treatment-response" id="treatment-response" value="unknown"> Unknown<br/>
+                            </div>
+                            </div>
+                            <hr/>
+                            <h3>Infant's Information</h3>
+                            <div class ="row">
+                            <div class="col-5">
+                            <label for="infant-unique-id">Infant's Unique ID</label>
+                            </div>
+                            <div class="col-7">
+                            <input type="text" name="infant-unique-id" id="infant-unique-id" value="{{ congenital_syphilis_infant.infant_unique_id }}">
+                            </div>
+                            </div>
+                            <hr/>
+                            <div class ="row">
+                            <div class="col-5">
+                                <label for="date-of-birth">Date of Birth</label>
+                            </div>
+                            <div class="col-7">
+                                <input type="date" name="date-of-birth" id="date-of-birth" value="{{ date_of_birth }}">
+                            </div>
+                            </div>
+                            <hr/>  
+                            <div class ="row">
+                            <div class="col-5">
+                            <label for="gestational-age">Gestational Age</label>
+                            </div>
+                            <div class="col-7">
+                            <input type="text" name="gestational-age" id="gestational-age" value="{{ gestational_age }}">
+                            </div>
+                            </div>
+                            <hr/>
+                            <div class ="row">
+                            <div class="col-5">
+                            <label for="birth-weight">Birth Weight</label>
+                            </div>
+                            <div class="col-7">
+                            <input type="text" name="birth-weight" id="birth-weight" value="{{ birth_weight }}">
+                            </div>
+                            </div>
+                            <hr/>
+                            <div class ="row">
+                            <div class="col-5">
+                            <label for="vital-status">Vital Status</label>
+                            </div>
+                            <div class="col-7">
+                            <input type="radio" name="vital-status" id="vital-status" value="alive"> Alive<br/>
+                            <input type="radio" name="vital-status" id="vital-status" value="born alive then died">Born alive then died<br/>
+                            <input type="radio" name="vital-status" id="vital-status" value="still brith">Still Birth<br/>
+                            <input type="radio" name="vital-status" id="vital-status" value="unknown"> Unknown<br/>
+                            </div>
+                            </div>
+                            <hr/>
+                            <div class ="row">
+                            <div class="col-5">
+                                <label for ="date-of-death">Date of Death</label>
+                            </div>
+                            <div class="col-7">
+                                <input type ="date" name ="date-of-death" id ="date-of-death" value ="{{ date_of_death }}">
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class ="row">
+                               <div class="col-5">
+                                <label for ="gestational-age">Estimated Gestational Age</label>
+                                </div>
+                                <div class="col-7">
+                                <input type ="text" name ="gestational-age" id ="gestational-age" value ="{{ gestational_age }}">
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class ="row">
+                                <div class="col-5">
+                                <label for="non-trep-test">Non Treponemal / Treponemal Test</label>
+                                </div>
+                                <div class="col-7">
+                                <input type="checkbox" name="first-visit" id="non-trep-test" value="first Prenatal first-visit"> First Prenatal Visit<br/>
+                                <input type="checkbox" name="28-32" id="non-trep-test" value="28-32 weeks">28-32 weeks gestation<br/>
+                                <input type="checkbox" name="delivery" id="non-trep-test" value="delivery"> delivery<br/>
+                                </div>
+                                </div>
+                                <hr/>
+                                <div class ="row">
+                                <div class="col-5">
+                                <label for="trep-test-infant">Tests</label>
+                                </div>
+                                <div class="col-7">
+                                   Date of Test 1: <input type ="date" name = "dateoftest1infant"><br/>
+                                   Type of Test 1: <input type ="text" name = "typeoftest1infant"><br/>
+                                   Result 1: <br/>
+                                    <input type ="radio" name = "result1infant" value = "positive">Positive<br/>
+                                    <input type ="radio" name = "result1infant" value = "negative">Negative<br/>
+                                    <input type ="radio" name = "result1infant" value = "unknown">unknown<br/>
+                                  Titre 1: <input type ="text" name = "titre1infant"><br/>
+                                  <hr/>
+                                  Date of Test 2: <input type ="date" name = "dateoftest2infant"><br/>
+                                  Type of Test 2: <input type ="text" name = "typeoftest2infant"><br/>
+                                  Result 2: <br/>
+                                   <input type ="radio" name = "result2infant" value = "positive">Positive<br/>
+                                   <input type ="radio" name = "result2infant" value = "negative">Negative<br/>
+                                   <input type ="radio" name = "result2infant" value = "unknown">unknown<br/>
+                                 Titre 2: <input type ="text" name = "titre2infant"><br/>
+                                 <hr/>
+                                </div>
+                                </div>
+                                <div class ="row">
+                                <div class="col-5">
+                                <label for="dark-field">Did Infant /Child, placenta or cord have darkfield exam, DFA, or special stains?</label>
+                                </div>
+                                <div class="col-7">
+                                <input type="radio" name="dark-field" id="dark-field" value="yes, positive"> Yes, positive<br/>
+                                <input type="radio" name="dark-field" id="dark-field" value="yes, negative"> Yes, negative<br/>
+                                <input type="radio" name="dark-field" id="dark-field" value="no test"> No test<br/>
+                                <input type="radio" name="dark-field" id="dark-field" value="no lesions and no tissue to test"> No lesions and no tissue to test<br/>
+                                <input type="radio" name="dark-field" id="dark-field" value="unknown"> Unknown<br/>
+                                </div>
+                                </div>
+                                <hr/>
+                                <div class ="row">
+                                <div class="col-5">
+                                <label for="cs-signs">Did the infant or child have any signs of congenital syphilis?</label>
+                                </div>
+                                <div class="col-7">
+                                <input type="radio" name="cs-signs" id="cs-signs" value="hepatosplenomegaly">hepatosplenomegaly<br/>
+                                <input type="radio" name="cs-signs" id="cs-signs" value="jaundice/hepatitis">jaundice/hepatitis<br/>
+                                <input type="radio" name="cs-signs" id="cs-signs" value="pseudo-paralysis">pseudo paralysis<br/>
+                                <input type="radio" name="cs-signs" id="cs-signs" value="syphilitic rash">syphilitic rash<br/>
+                                <input type="radio" name="cs-signs" id="cs-signs" value="snuffles">snuffles<br/>
+                                <input type="radio" name="cs-signs" id="cs-signs" value="condyloma lata">condyloma lata<br/>
+                                <input type="radio" name="cs-signs" id="cs-signs" value="snuffles">snuffles<br/>
+                                <input type="radio" name="cs-signs" id="cs-signs" value="edema">Edema<br/>
+                                <input type="radio" name="cs-signs" id="cs-signs" value="no signs / asymptomatic">No signs / Asymptomatic<br/>
+                                <input type="radio" name="cs-signs" id="cs-signs" value="unknown">Unknown<br/>
+                                </div>
+                                </div>
+                                <hr/>
+                                <div class ="row">
+                                <div class="col-5">
+                                <label for="longbone-xray">Did the infant or child have long bone xray?</label>
+                                </div>
+                                <div class="col-7">
+                                <input type="radio" name="longbone-xray" id="longbone-xray" value="yes, no signs of CS"> Yes, No signs of CS<br/>
+                                <input type="radio" name="longbone-xray" id="longbone-xray" value="yes, signs of CS"> Yes, signs of CS<br/> 
+                                <input type="radio" name="longbone-xray" id="longbone-xray" value="no xrays"> No xrays<br/>
+                                <input type="radio" name="longbone-xray" id="longbone-xray" value="unknown"> Unknown<br/>
+                                </div>
+                                </div>
+                                <hr/>
+                                <div class ="row">
+                                <div class="col-5">
+                                <label for="csf-vdrl">Did the infant or child have a  CSF-VDRL?</label>
+                                </div>
+                                <div class="col-7">
+                                <input type="radio" name="csf-vdrl" id="csf-vdrl" value="yes, reactive"> Yes, reactive<br/>
+                                <input type="radio" name="csf-vdrl" id="csf-vdrl" value="yes, non-reactive"> Yes, non-reactive<br/>
+                                <input type="radio" name="csf-vdrl" id="csf-vdrl" value="no test"> No test<br/>
+                                <input type="radio" name="csf-vdrl" id="csf-vdrl" value="unknown"> Unknown<br/>
+                                </div>
+                                </div>
+                                <hr/>
+                                <div class ="row">
+                                <div class="col-5">
+                                <label for="csf-protein">Did the infant or child have a CSF WBC count or CSF protein test?</label>
+                                </div>
+                                <div class="col-7">
+                                <input type="radio" name="csf-protein" id="csf-protein" value="yes, count elevated"> Yes, count elevated<br/>
+                                <input type="radio" name="csf-protein" id="csf-protein" value="yes, protein elevated"> Yes, protein elevated<br/>
+                                <input type="radio" name="csf-protein" id="csf-protein" value="both test elevated"> Both test elevated<br/>
+                                <input type = "radio" name = "csf-protein" id = "csf-protein" value = "both test not elevated"> Both test not elevated<br/>
+                                <input type="radio" name="csf-protein" id="csf-protein" value="no test"> No test<br/>
+                                <input type="radio" name="csf-protein" id="csf-protein" value="unknown"> Unknown<br/>
+                                </div>
+                                </div>
+                                <hr/>
+                                <div class ="row">
+                                <div class="col-5">
+                                <label for="cs-treatment">Was the infant or child treated for CS?</label>
+                                </div>
+                                <div class="col-7">
+                                <input type="radio" name="cs-treatment" id="cs-treatment" value="Yes with aqueous or procaine penicillin for 10 days"> Yes with aqueous or procaine penicillin for 10 days<br/>
+                                <input type="radio" name="cs-treatment" id="cs-treatment" value="yes with benzathine penicillin x 1"> yes with benzathine penicillin x 1<br/>
+                                <input type="radio" name="cs-treatment" id="cs-treatment" value="yes with other treatment"> yes with other treatment<br/>
+                                <input type="radio" name="cs-treatment" id="cs-treatment" value="no treatment"> no treatment<br/>
+                                <input type="radio" name="cs-treatment" id="cs-treatment" value="unknown"> Unknown<br/>
+                                </div>
+                                </div>
+                                <hr/>
+                                <div class ="row">
+                                <div class="col-5">
+                                <label for="classification">Classification</label>
+                                </div>
+                                <div class="col-7">
+                                <input type="radio" name="classification" id="classification" value="not a case"> Not a case<br/>
+                                <input type="radio" name="classification" id="classification" value="probable case"> Probable case<br/>
+                                <input type="radio" name="classification" id="classification" value="confirmed case"> Confirmed case<br/>
+                                <input type="radio" name="classification" id="classification" value="syphilitic still birth"> Syphilitic still birth<br/>
+                                <input type="radio" name="classification" id="classification" value="unknown"> Unknown<br/>
+                                </div>
+                                </div>
+                                <hr/>
+                        </form> 
+                </div>
+            </nav>
+        </div>
+        </div>
+
+    </div>
+
+
+</div>
+{% endblock content %}
